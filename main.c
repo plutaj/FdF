@@ -4,8 +4,8 @@
 
 int main(int argc, char **argv)
 {
-    // void    *mlx_connection;
-    // void    *mlx_window;
+    void    *mlx_connection;
+    void    *mlx_window;
 	int fd;
     char **str;
     int line_count;
@@ -26,21 +26,19 @@ int main(int argc, char **argv)
         exit(1);
     str = parse_map(fd, line_count);
     int i = 0; 
+    printf("there is a %d points in 1st line", count_points(*str));
     // test code 
     // while (str[i] != NULL)
     // {
     //     printf("%s", str[i]);
     //     i++;
     // }
-    // printf("sme tu");
-    printf("\nheight is : %d", map_data->height);
-    printf("\nwidth is : %d", map_data->width);
     // test code
     
-    // mlx_connection = mlx_init();
-    // mlx_window = mlx_new_window(mlx_connection, 500, 500, "My 1 win");
-    // map_data = NULL;
-    // mlx_loop(mlx_connection);
+    mlx_connection = mlx_init();
+    mlx_window = mlx_new_window(mlx_connection, map_data->width * 50, map_data->height * 50, "FdF");
+    printf("\nwidth is : %d height is : %d", map_data->width, map_data->height);
+    mlx_loop(mlx_connection);
 
     return (0);
 }
@@ -121,4 +119,23 @@ int compare_len(int line_len)
         return (line_len);
     }
     return (longest_line);
+}
+
+int    count_points(char *line)
+{
+    int points;
+
+    points = 0;
+    while (*line)
+    {
+        if (*line != ' ')
+        {
+            points++;
+            while(*line != ' ' && *line)
+                line++;
+        }
+        while (*line == ' ' || *line == '\n')
+            line++;
+    }
+    return (points);
 }
