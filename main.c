@@ -9,7 +9,6 @@ int main(int argc, char **argv)
 	int fd;
     char **str;
     int line_count;
-    s_map   *map_data;
 
     if (argc != 2)
         exit(1);
@@ -18,8 +17,6 @@ int main(int argc, char **argv)
     if (fd == -1)
         exit(1);
     line_count = count_lines(fd);
-    map_data = NULL;
-    init_map_data(&map_data, line_count, compare_len(0));
     fd = close(fd);
 	fd = open(argv[1], O_RDONLY);
     if (fd == -1)
@@ -27,6 +24,7 @@ int main(int argc, char **argv)
     str = parse_map(fd, line_count);
     int i = 0; 
     printf("there is a %d points in 1st line", count_points(*str));
+    printf("there is a %d points in 1st line", line_count);
     // test code 
     // while (str[i] != NULL)
     // {
@@ -34,22 +32,17 @@ int main(int argc, char **argv)
     //     i++;
     // }
     // test code
-    
     mlx_connection = mlx_init();
-    mlx_window = mlx_new_window(mlx_connection, map_data->width * 50, map_data->height * 50, "FdF");
-    printf("\nwidth is : %d height is : %d", map_data->width, map_data->height);
+    mlx_window = mlx_new_window(mlx_connection, MAP_WIDTH, MAP_HEIGHT, "FdF");
+    s_map *map_size;
+    map_size = (s_map *)malloc(sizeof(s_map));
+    if (!map_size)
+        exit(1);
+    map_size->width = count_points(*str);
+    map_size->height = line_count;
+    create_net(mlx_connection, mlx_window, map_size);
     mlx_loop(mlx_connection);
-
     return (0);
-}
-
-void    init_map_data(s_map **map_data, int height, int width)
-{
-    *map_data = (s_map *)malloc(sizeof(s_map));
-    if (!map_data)
-        exit(0);
-    (*map_data)->width = width;
-    (*map_data)->height = height;
 }
 
 char **parse_map(int fd, int line_count)
@@ -69,7 +62,6 @@ char **parse_map(int fd, int line_count)
         array[i] = str;
         i++;
         str = get_next_line(fd);
-        // printf("%s", str);
     }
     return (array);
 }

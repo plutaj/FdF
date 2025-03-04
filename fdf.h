@@ -6,6 +6,9 @@
 #include "libft/libft.h"
 
 #define WHITE_PIX 0xFFFFFF
+#define MAP_WIDTH 500
+#define MAP_HEIGHT 500
+#define PIXEL_DISTANCE 50
 
 typedef struct t_map
 {
@@ -16,5 +19,10 @@ typedef struct t_map
 char    **parse_map(int fd, int line_count);
 int     count_lines(int fd);
 int     compare_len(int line_len);
-void    init_map_data(s_map **map_data, int height, int width);
 int     count_points(char *line);
+void    create_net(void *mlx_connection, void *mlx_window, s_map *map_size);
+void    create_net_vertical(void *mlx_connection, void *mlx_window, s_map *map_size);
+void    create_net_horizontal(void *mlx_connection, void *mlx_window, s_map *map_size);
+
+
+
